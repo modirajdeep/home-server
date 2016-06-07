@@ -1,0 +1,50 @@
+<% provide(:title, "Guest") %>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:title) %> | Home Server</title>
+  </head>
+<body>
+  <div class="page-header">
+  <h1>Guest User <small><%= Dir.pwd %></small></h1>
+</div>
+
+<div class = "row">
+<ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Library</a></li>
+  <li class="active">Data</li>
+</ol>
+
+   
+
+<% @files.each do |file| %>
+<div class="col-sm-6 col-md-2">
+    <div class="thumbnail">
+      <%= image_tag("file.png", alt: "icon") %>
+      <div class="caption">
+        <h4><%= fname(file) %></h4>
+        <% if File.directory? file %>
+        <p>Folder</p>
+        <% else %>
+        <p><b><%= fext(file) %> file</b></p>
+        <% end %>
+<div class="btn-group dropup">
+  <%= link_to "Open", "#", class: "btn btn-primary" %>
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><%= link_to "Delete", "#" %></li>
+    <li role="separator" class="divider"></li>
+    <li><%= link_to "Edit", "#" %></li>
+    <li><%= link_to "Info", "#" %></li>
+  </ul>
+</div></div></div></div>
+<% end %>
+</div>
+ 
+</body>
+</html>

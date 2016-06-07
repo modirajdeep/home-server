@@ -1,0 +1,98 @@
+<% provide(:title, "Browse") %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:title) %> | Home Server</title>
+  </head>
+<body>
+  
+<% search = params[:s]
+pathTo = params[:to]
+f = params[:f]
+browse(pathTo, search) %>
+
+<div class = "row">
+  <%= render 'tasknav' %>
+  
+<% if @sanepath %>
+<ol class="breadcrumb">
+    <% path = pathSplit pathTo
+    current = path.last
+    path.delete(current)
+    path.each do |x| %>
+  <li><%= link_to x, pathLink(pathTo,x) %></li>
+  <% end %>
+  <li class="active"><%= current %></li>
+</ol> <% end %>
+
+<% if @searching %>
+<div class = "page-header">
+  <h1>
+    <%= params[:s] %>
+    <small>results</small>
+  </h1>
+</div>
+<% end %>
+
+<% if @sanepath || @searching %>
+
+<!-- Folder Listing -->
+<div class="col-md-4">
+<div class="panel panel-primary">
+  <div class="panel-heading"><h3 class="panel-title">Folders</h3></div>
+  <div class="list-group">
+    <% @folders.each do |folder| %>
+      <%= link_to folder, params.merge(to:linkOf(pathTo,folder)),
+        class: "list-group-item" %> <% end %>
+  </div></div>
+</div>
+
+<!-- File Listing -->
+<div class="col-md-8">
+<div class="panel panel-success">
+<div class="panel-heading"><h3 class="panel-title">Files</h3></div>
+<div class="panel-body">
+
+<% @files.each do |file| %>
+  
+<div class="col-sm-6 col-md-3">
+  <div class="thumbnail">
+      <%= link_to image_tag("/"+@uploadPath+"/"+file, alt: file), 
+      params.merge(f:file), remote: true %>
+      <div class="caption">
+        <h4><%= fname(file) %></h4>
+        
+        <p><b><%= fext(file) %> file</b></p>
+        
+<div class="btn-group dropup">
+<!-- Button trigger modal -->
+
+<%= link_to "Open", params.merge(f:file), remote: true, class: "btn btn-info" %>
+
+<!-- Modal -->
+<div class="modal" id="openModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  
+</div>
+
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><%= link_to "Remove", "#" %></li>
+    <li role="separator" class="divider"></li>
+    <li><%= link_to "Edit", "#" %></li>
+    <li><%= link_to "Info", "#" %></li>
+  </ul>
+</div></div></div>
+
+</div>
+
+<% end %>
+</div></div></div>
+<% end %>
+</div>
+</body>
+</html>
+ 
+  
